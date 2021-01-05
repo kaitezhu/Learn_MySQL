@@ -9,6 +9,9 @@
 	
 1.分组函数做条件肯定是放在having子句中
 2.能用分组前筛选的，就优先使用
+
+group by 子句支持单个和多个字段分组
+也可以添加排序，放在分组查询最后
 */
 
 #引入：查询每个部门的平均工资
@@ -66,3 +69,21 @@ SELECT COUNT(*) emp_count, LENGTH(last_name) len_name
 FROM employees
 GROUP BY len_name
 HAVING emp_count > 5;
+
+#按多个字段分组
+#案例：查询每个部门每个工种的员工的平均工资
+
+SELECT AVG(salary) avg_sal, job_id job, department_id department
+FROM employees
+GROUP BY job, department;
+
+#添加排序
+#案例：查询每个部门每个工种的员工的平均工资，并且按平均工资的高低显示
+
+SELECT AVG(salary) avg_sal, job_id job, department_id department
+FROM employees
+WHERE department_id IS NOT NULL
+GROUP BY job, department
+HAVING avg_sal > 10000
+ORDER BY avg_sal DESC;
+
